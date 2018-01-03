@@ -55,19 +55,21 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setTitle("CalciPlay");
         initializeVariables();
+        goBtn.setEnabled(true);
         range3 = generationNumbers();
         choosingOperators();
          arrow.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
                  refreshGame();
+                 goBtn.setEnabled(true);
              }
          });
          refresh.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-
                  refreshGame();
+                 goBtn.setEnabled(true);
              }
          });
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
                 int addResult = Integer.parseInt(firstNum.getText().toString())+Integer.parseInt(secondNum.getText().toString());
                 displayingOptions(firstNum.getText().toString(),secondNum.getText().toString(),addResult);
                 flag = 1;
+                goBtn.setEnabled(true);
             }
         });
         subBtn.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
                 int subResult =  Integer.parseInt(firstNum.getText().toString())-Integer.parseInt(secondNum.getText().toString());
                 displayingOptions(firstNum.getText().toString(), secondNum.getText().toString(), subResult);
                 flag =1;
+                goBtn.setEnabled(true);
             }
         });
         mulBtn.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
                 int mulResult = Integer.parseInt(firstNum.getText().toString())*Integer.parseInt(secondNum.getText().toString());
                 displayingOptions(firstNum.getText().toString(), secondNum.getText().toString(), mulResult);
                 flag =1;
+                goBtn.setEnabled(true);
             }
         });
         divBtn.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
                 int divResult =  Integer.parseInt(firstNum.getText().toString())/Integer.parseInt(secondNum.getText().toString());
                 displayingOptions(firstNum.getText().toString(), secondNum.getText().toString(), divResult);
                 flag =1;
+                goBtn.setEnabled(true);
             }
         });
         goBtn.setOnClickListener(new View.OnClickListener() {
@@ -148,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
                             refresh.setVisibility(View.VISIBLE);
                             arrow.setVisibility(View.VISIBLE);
                             score.setText("SCORE = "+String.valueOf(scorenum));
+                            goBtn.setEnabled(false);
 
                         } else {
                             Animation animShake = AnimationUtils.loadAnimation(getWindow().getContext(), R.anim.rotate);
@@ -262,10 +269,17 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent(this, DisplayScoreCard.class);
-        intent.putExtra("name",name);
-        intent.putExtra("score",scorenum);
-        startActivity(intent);
-        return super.onOptionsItemSelected(item);
+        if(name==null){
+            enterNameFragment();
+            return super.onOptionsItemSelected(item);
+        }
+        else{
+            intent.putExtra("name",name);
+            intent.putExtra("score",scorenum);
+            startActivity(intent);
+            return super.onOptionsItemSelected(item);
+        }
+
     }
 
     private void refreshGame() {
