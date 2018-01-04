@@ -39,8 +39,8 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.View
             holder.score.setText(String.valueOf(scorestr));
         }
 
-            Log.i("check", "name == " + namestr);
-            Log.i("check", "score ==" + scorestr);
+        Log.i("check", "name == " + namestr);
+        Log.i("check", "score ==" + scorestr);
     }
 
     @Override
