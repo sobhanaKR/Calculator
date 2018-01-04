@@ -34,8 +34,12 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         String namestr = nameArray.get(position);
         int scorestr = scoreArray.get(position);
-        if(namestr!=null && scorestr!=0 ){
+        if(namestr!=null ){
             holder.name.setText(namestr);
+            holder.score.setText(String.valueOf(scorestr));
+        }
+        else{
+            holder.name.setText("default");
             holder.score.setText(String.valueOf(scorestr));
         }
 

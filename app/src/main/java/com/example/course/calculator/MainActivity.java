@@ -82,18 +82,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         optionA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                optionA.setBackgroundResource(R.drawable.blue_border);
-                optionA.setTextColor(Color.parseColor("#ffffff"));
-                optionB.setTextColor(Color.parseColor("#000000"));
-                optionC.setTextColor(Color.parseColor("#000000"));
-                optionD.setTextColor(Color.parseColor("#000000"));
-                optionB.setBackgroundResource(R.drawable.remove_btn_border);
-                optionC.setBackgroundResource(R.drawable.remove_btn_border);
-                optionD.setBackgroundResource(R.drawable.remove_btn_border);
-                String r = optionA.getText().toString();
-                String segments[] = r.split(" ");
-                resultBtn.setText(segments[1]);
-                resultBtn.setBackgroundResource(R.drawable.circle_shape);
+                settingBordersColors(optionA,optionB,optionC,optionD);
                 image.setVisibility(View.GONE);
                 flag = 1;
                 goBtn.setEnabled(true);
@@ -102,18 +91,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         optionB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                optionB.setBackgroundResource(R.drawable.blue_border);
-                optionB.setTextColor(Color.parseColor("#ffffff"));
-                optionA.setTextColor(Color.parseColor("#000000"));
-                optionC.setTextColor(Color.parseColor("#000000"));
-                optionD.setTextColor(Color.parseColor("#000000"));
-                optionA.setBackgroundResource(R.drawable.remove_btn_border);
-                optionC.setBackgroundResource(R.drawable.remove_btn_border);
-                optionD.setBackgroundResource(R.drawable.remove_btn_border);
-                String r = optionB.getText().toString();
-                String segments[] = r.split(" ");
-                resultBtn.setText(segments[1]);
-                resultBtn.setBackgroundResource(R.drawable.circle_shape);
+                settingBordersColors(optionB,optionA,optionC,optionD);
                 image.setVisibility(View.GONE);
                 flag =1;
                 goBtn.setEnabled(true);
@@ -122,18 +100,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         optionC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                optionC.setBackgroundResource(R.drawable.blue_border);
-                optionC.setTextColor(Color.parseColor("#ffffff"));
-                optionB.setTextColor(Color.parseColor("#000000"));
-                optionA.setTextColor(Color.parseColor("#000000"));
-                optionD.setTextColor(Color.parseColor("#000000"));
-                optionB.setBackgroundResource(R.drawable.remove_btn_border);
-                optionA.setBackgroundResource(R.drawable.remove_btn_border);
-                optionD.setBackgroundResource(R.drawable.remove_btn_border);
-                String r = optionC.getText().toString();
-                String segments[] = r.split(" ");
-                resultBtn.setText(segments[1]);
-                resultBtn.setBackgroundResource(R.drawable.circle_shape);
+                settingBordersColors(optionC,optionA,optionB,optionD);
                 image.setVisibility(View.GONE);
                 flag =1;
                 goBtn.setEnabled(true);
@@ -142,18 +109,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         optionD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                optionD.setBackgroundResource(R.drawable.blue_border);
-                optionD.setTextColor(Color.parseColor("#ffffff"));
-                optionB.setTextColor(Color.parseColor("#000000"));
-                optionC.setTextColor(Color.parseColor("#000000"));
-                optionA.setTextColor(Color.parseColor("#000000"));
-                optionB.setBackgroundResource(R.drawable.remove_btn_border);
-                optionC.setBackgroundResource(R.drawable.remove_btn_border);
-                optionA.setBackgroundResource(R.drawable.remove_btn_border);
-                String r = optionD.getText().toString();
-                String segments[] = r.split(" ");
-                resultBtn.setText(segments[1]);
-                resultBtn.setBackgroundResource(R.drawable.circle_shape);
+                settingBordersColors(optionD,optionA,optionC,optionB);
                 image.setVisibility(View.GONE);
                 flag =1;
                 goBtn.setEnabled(true);
@@ -175,54 +131,10 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
                     if (!resultBtn.getText().toString().matches("")) {
                         int temp = Integer.parseInt(resultBtn.getText().toString());
                         if (temp == Globalans) {
-                            resultBtn.setBackgroundResource(R.drawable.green_circle);
-                            image.setVisibility(View.VISIBLE);
-                            score.setVisibility(View.VISIBLE);
-                            scorenum = sharedPreferences.getInt("score", 0);
-                            if(clickTimes == 1) {
-                                scorenum = scorenum + 4;
-                            }
-                            else if(clickTimes == 2){
-                                scorenum = scorenum + 3;
-                            }
-                            else if(clickTimes == 3){
-                                scorenum = scorenum + 2;
-                            }
-                            SharedPreferences.Editor editor = context.getSharedPreferences("calci_app",
-                                    Context.MODE_PRIVATE).edit();
-                            editor.putInt("score", scorenum);
-                            editor.apply();
-                            Animation animShake = AnimationUtils.loadAnimation(getWindow().getContext(), R.anim.rotate);
-                            image.startAnimation(animShake);
-                            image.setBackgroundResource(R.drawable.flower);
-                            optionA.setEnabled(false);
-                            optionB.setEnabled(false);
-                            optionC.setEnabled(false);
-                            optionD.setEnabled(false);
-                            refresh.setVisibility(View.VISIBLE);
-                            arrow.setVisibility(View.VISIBLE);
-                            if(scorenum >= 50) {
-                                score.setText("SCORE = " + String.valueOf(scorenum)+"  Level = 2");
-                            }
-                            else if(scorenum >= 100){
-                                score.setText("SCORE = " + String.valueOf(scorenum)+"  Level = 3");
-                            }
-                            else{
-                                score.setText("SCORE = " + String.valueOf(scorenum)+"  Level = 1");
-                            }
-                            goBtn.setEnabled(false);
+                            correctAnswerOutcome();
 
                         } else {
-                            Animation animShake = AnimationUtils.loadAnimation(getWindow().getContext(), R.anim.rotate);
-                            resultBtn.setBackgroundResource(R.drawable.red_circle);
-                            resultBtn.startAnimation(animShake);
-                            image.setVisibility(View.VISIBLE);
-                            Animation animShake1 = AnimationUtils.loadAnimation(getWindow().getContext(), R.anim.rotate);
-                            image.startAnimation(animShake1);
-                            image.setBackgroundResource(R.drawable.tryagain);
-                            arrow.setVisibility(View.VISIBLE);
-                            refresh.setVisibility(View.VISIBLE);
-
+                            wrongAnswerOutcome();
                         }
                     }
                 }
@@ -232,6 +144,84 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
 
             }
         });
+    }
+
+    private void settingBordersColors(Button optionA, Button optionB, Button optionC, Button optionD) {
+        optionA.setBackgroundResource(R.drawable.blue_border);
+        optionA.setTextColor(Color.parseColor("#ffffff"));
+        optionB.setTextColor(Color.parseColor("#000000"));
+        optionC.setTextColor(Color.parseColor("#000000"));
+        optionD.setTextColor(Color.parseColor("#000000"));
+        optionB.setBackgroundResource(R.drawable.remove_btn_border);
+        optionC.setBackgroundResource(R.drawable.remove_btn_border);
+        optionD.setBackgroundResource(R.drawable.remove_btn_border);
+        String r = optionA.getText().toString();
+        String segments[] = r.split(" ");
+        resultBtn.setText(segments[1]);
+        resultBtn.setBackgroundResource(R.drawable.circle_shape);
+    }
+
+    private void wrongAnswerOutcome() {
+        image.setVisibility(View.VISIBLE);
+        arrow.setVisibility(View.VISIBLE);
+        refresh.setVisibility(View.VISIBLE);
+        wrongAnswerAnim();
+    }
+
+    private void wrongAnswerAnim() {
+        Animation animShake = AnimationUtils.loadAnimation(getWindow().getContext(), R.anim.rotate);
+        resultBtn.setBackgroundResource(R.drawable.red_circle);
+        resultBtn.startAnimation(animShake);
+        Animation animShake1 = AnimationUtils.loadAnimation(getWindow().getContext(), R.anim.rotate);
+        image.startAnimation(animShake1);
+        image.setBackgroundResource(R.drawable.tryagain);
+    }
+
+    private void correctAnswerOutcome() {
+        resultBtn.setBackgroundResource(R.drawable.green_circle);
+        image.setVisibility(View.VISIBLE);
+        settingScores();
+        correctAnswerAnim();
+        optionA.setEnabled(false);
+        optionB.setEnabled(false);
+        optionC.setEnabled(false);
+        optionD.setEnabled(false);
+        goBtn.setEnabled(false);
+    }
+
+    private void correctAnswerAnim() {
+        Animation animShake = AnimationUtils.loadAnimation(getWindow().getContext(), R.anim.rotate);
+        image.startAnimation(animShake);
+        image.setBackgroundResource(R.drawable.flower);
+        refresh.setVisibility(View.VISIBLE);
+        arrow.setVisibility(View.VISIBLE);
+    }
+
+    private void settingScores() {
+        score.setVisibility(View.VISIBLE);
+        scorenum = sharedPreferences.getInt("score", 0);
+        if(clickTimes == 1) {
+            scorenum = scorenum + 4;
+        }
+        else if(clickTimes == 2){
+            scorenum = scorenum + 3;
+        }
+        else if(clickTimes == 3){
+            scorenum = scorenum + 2;
+        }
+        SharedPreferences.Editor editor = context.getSharedPreferences("calci_app",
+                Context.MODE_PRIVATE).edit();
+        editor.putInt("score", scorenum);
+        editor.apply();
+        if(scorenum >= 50) {
+            score.setText("SCORE = " + String.valueOf(scorenum)+"  Level = 2");
+        }
+        else if(scorenum >= 100){
+            score.setText("SCORE = " + String.valueOf(scorenum)+"  Level = 3");
+        }
+        else{
+            score.setText("SCORE = " + String.valueOf(scorenum)+"  Level = 1");
+        }
     }
 
     private void choosingOperators() {
@@ -316,70 +306,12 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
     }
 
     private int  generationNumbers() {
-        Random r = new Random();
-        int range1 = 0,range2 = 0,range3 = 0;
-        if(scorenum<50) {
-            range1 = r.nextInt(10 - 1) + 1;
-            range2 = r.nextInt(10 - 1) + 1;
-            range3 = r.nextInt(3 - 0) + 0;
-            if (range1 > range2 || range1 == range2) {
-                firstNum.setText(String.valueOf(range1));
-                secondNum.setText(String.valueOf(range2));
-            } else {
-                firstNum.setText(String.valueOf(range2));
-                secondNum.setText(String.valueOf(range1));
-            }
-            calculatingResult();
-            if (Globalans > 9 && Globalans < 100) {
-                initArray(b, c, d, range3, Globalans);
-                a = getRandomWithExclusion(r, 1, 100, exclude);
-                initArray(a, b, c, range3, Globalans);
-                b = getRandomWithExclusion(r, 1, 100, exclude);
-                initArray(b, a, d, range3, Globalans);
-                c = getRandomWithExclusion(r, 1, 100, exclude);
-                initArray(b, a, c, range3, Globalans);
-                d = getRandomWithExclusion(r, 1, 100, exclude);
-            } else {
-                initArray(b, c, d, range3, Globalans);
-                a = getRandomWithExclusion(r, 1, 10, exclude);
-                initArray(a, b, c, range3, Globalans);
-                b = getRandomWithExclusion(r, 1, 10, exclude);
-                initArray(b, a, d, range3, Globalans);
-                c = getRandomWithExclusion(r, 1, 10, exclude);
-                initArray(b, a, c, range3, Globalans);
-                d = getRandomWithExclusion(r, 1, 10, exclude);
-            }
-        }else{
-            range1 = r.nextInt(100 - 1) + 1;
-            range2 = r.nextInt(100 - 1) + 1;
-            range3 = r.nextInt(3 - 0) + 0;
-            if (range1 > range2 || range1 == range2) {
-                firstNum.setText(String.valueOf(range1));
-                secondNum.setText(String.valueOf(range2));
-            } else{
-                firstNum.setText(String.valueOf(range2));
-                secondNum.setText(String.valueOf(range1));
-            }
-            calculatingResult();
-            if (Globalans > 99 && Globalans < 1000) {
-                initArray(b, c, d, range3, Globalans);
-                a = getRandomWithExclusion(r, 1, 100, exclude);
-                initArray(a, b, c, range3, Globalans);
-                b = getRandomWithExclusion(r, 1, 100, exclude);
-                initArray(b, a, d, range3, Globalans);
-                c = getRandomWithExclusion(r, 1, 100, exclude);
-                initArray(b, a, c, range3, Globalans);
-                d = getRandomWithExclusion(r, 1, 100, exclude);
-            } else {
-                initArray(b, c, d, range3, Globalans);
-                a = getRandomWithExclusion(r, 1, 1000, exclude);
-                initArray(a, b, c, range3, Globalans);
-                b = getRandomWithExclusion(r, 1, 1000, exclude);
-                initArray(b, a, d, range3, Globalans);
-                c = getRandomWithExclusion(r, 1, 1000, exclude);
-                initArray(b, a, c, range3, Globalans);
-                d = getRandomWithExclusion(r, 1, 1000, exclude);
-            }
+        if(scorenum>50) {
+            int end = 100;
+            range3 = settingRandomValues(end);
+        }else {
+            int end = 10;
+            range3 = settingRandomValues(end);
         }
         optionA.setText("a. " + a);
         optionB.setText("b. " + b);
@@ -388,23 +320,41 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         return  range3;
     }
 
-    private void initArray(int one, int two, int three, int range3, int globalans) {
-        exclude[0] = one;
-        exclude[1] = two;
-        exclude[2] = three;
-        exclude[3] = range3;
-        exclude[4] = globalans;
+    private int settingRandomValues(int end) {
+        Random r = new Random();
+        int range1 = 0,range2 = 0,range3 = 0;
+        range1 = r.nextInt(end - 1) + 1;
+        range2 = r.nextInt(end - 1) + 1;
+        range3 = r.nextInt(3 - 0) + 0;
+        if (range1 > range2 || range1 == range2) {
+            firstNum.setText(String.valueOf(range1));
+            secondNum.setText(String.valueOf(range2));
+        } else {
+            firstNum.setText(String.valueOf(range2));
+            secondNum.setText(String.valueOf(range1));
+        }
+        calculatingResult();
+        a = GetRandomNumbers(r,b,c,d,Globalans,2);
+        b = GetRandomNumbers(r,a,c,d,Globalans, 2);
+        c = GetRandomNumbers(r,b,a,d,Globalans, 2);
+        d = GetRandomNumbers(r,b,c,a,Globalans, 2);
+        return  range3;
     }
 
-    private int getRandomWithExclusion(Random rnd, int start, int end, int[] exclude) {
-        int random = start + rnd.nextInt(end - start + 1 - exclude.length);
-        for (int ex: exclude) {
-            if (random < ex) {
-                break;
-            }
-            random++;
+    public  int GetRandomNumbers(Random random, int b, int c, int d, int globalans, int i)
+    {
+        int number;
+        if(i==1) {
+            do {
+                number = random.nextInt(10 - 0) + 0;
+            } while (number == b || number == c || number == d || number == globalans);
+        }else{
+            do {
+                number = random.nextInt(100 - 0) + 0;
+            } while (number == b || number == c || number == d || number == globalans);
+
         }
-        return random;
+        return number;
     }
 
     private void enterNameFragment() {
@@ -428,37 +378,39 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent(this, DisplayScoreCard.class);
-        if(name==null){
-            enterNameFragment();
-            return super.onOptionsItemSelected(item);
-        }
-        else{
-            intent.putExtra("name",name);
-            intent.putExtra("score",scorenum);
-            startActivity(intent);
-            return super.onOptionsItemSelected(item);
-        }
+        intent.putExtra("name",name);
+        intent.putExtra("score",scorenum);
+        startActivity(intent);
+        return super.onOptionsItemSelected(item);
 
     }
 
     private void refreshGame() {
         clickTimes = 0;
         range3 = generationNumbers();
-        refreshOptions();
+        refreshBorders();
         choosingOperators();
-        optionA.setTextColor(Color.parseColor("#000000"));
-        optionB.setTextColor(Color.parseColor("#000000"));
-        optionC.setTextColor(Color.parseColor("#000000"));
-        optionD.setTextColor(Color.parseColor("#000000"));
-        image.setVisibility(View.GONE);
-        score.setVisibility(View.GONE);
-        arrow.setVisibility(View.GONE);
-        refresh.setVisibility(View.GONE);
+        setTextColor();
+        hidingItems();
         resultBtn.setText("");
         resultBtn.setBackgroundResource(R.drawable.circle_shape);
     }
 
-    private void refreshOptions() {
+    private void hidingItems() {
+        image.setVisibility(View.GONE);
+        score.setVisibility(View.GONE);
+        arrow.setVisibility(View.GONE);
+        refresh.setVisibility(View.GONE);
+    }
+
+    private void setTextColor() {
+        optionA.setTextColor(Color.parseColor("#000000"));
+        optionB.setTextColor(Color.parseColor("#000000"));
+        optionC.setTextColor(Color.parseColor("#000000"));
+        optionD.setTextColor(Color.parseColor("#000000"));
+    }
+
+    private void refreshBorders() {
         optionA.setBackgroundResource(R.drawable.remove_btn_border);
         optionB.setBackgroundResource(R.drawable.remove_btn_border);
         optionC.setBackgroundResource(R.drawable.remove_btn_border);
