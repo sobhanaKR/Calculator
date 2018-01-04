@@ -28,8 +28,27 @@
         android:hint="Enter  First number"
         android:textColorHint="#ff0000"
         android:padding="10dp"
+        android:textStyle="bold"
         android:background="@drawable/remove_btn_rectangle"
-        android:textSize="14sp"/>
+        android:textSize="16sp"/>
+  </LinearLayout>
+  <LinearLayout
+      android:id="@+id/operator"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/addition_layout"
+      android:layout_marginTop="15dp"
+      android:background="?attr/selectableItemBackground">
+
+    <Button
+        android:id="@+id/operator_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:textColor="#ffffff"
+        android:background="@drawable/blue_border"
+        android:textSize="22sp"/>
   </LinearLayout>
 
   <LinearLayout
@@ -48,8 +67,9 @@
         android:hint="Enter  Second number"
         android:textColorHint="#ff0000"
         android:padding="10dp"
+        android:textStyle="bold"
         android:background="@drawable/remove_btn_rectangle"
-        android:textSize="14sp"/>
+        android:textSize="16sp"/>
   </LinearLayout>
 </LinearLayout>
 
@@ -71,7 +91,7 @@
         android:background="@drawable/remove_btn_border"
         android:onClick="onClick"
         android:padding="10dp"
-        android:text="+"
+        android:textAllCaps="false"
         android:textSize="22sp"
         tools:ignore="OnClick" />
   </LinearLayout>
@@ -92,7 +112,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="-"
+        android:textAllCaps="false"
         android:layout_margin="10dp"
         android:background="@drawable/remove_btn_border"
         android:textSize="22sp"/>
@@ -111,7 +131,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="*"
+        android:textAllCaps="false"
         android:layout_margin="10dp"
         android:background="@drawable/remove_btn_border"
         android:textSize="22sp"/>
@@ -132,7 +152,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="/"
+        android:textAllCaps="false"
         android:layout_margin="10dp"
         android:background="@drawable/remove_btn_border"
         android:textSize="22sp"/>
@@ -147,7 +167,7 @@
       android:layout_marginRight="7dp"
       android:background="?attr/selectableItemBackground">
 
-    <EditText
+    <Button
         android:id="@+id/result_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
