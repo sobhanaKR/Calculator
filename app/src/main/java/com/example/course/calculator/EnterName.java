@@ -68,23 +68,6 @@ public class EnterName extends DialogFragment {
             @Override
             public void onClick(View view) {
                 callbackHandler.saveName(name.getText().toString());
-               /* Cursor cursor = db.getData();
-                if(cursor!=null) {
-                    if (name.getText().toString() != null) {
-                        Boolean exists = false;
-                        exists = db.checkName(name.getText().toString());
-                        if (exists) {
-                            Animation animShake = AnimationUtils.loadAnimation(activity.getWindow().getContext(), R.anim.rotate);
-                            name.startAnimation(animShake);
-                            name.setTextColor(Color.parseColor("#ff0000"));
-                        } else {
-                            db.insertName(name.getText().toString());
-                            dismiss();
-                        }
-                    } else {
-                        name.setError("you need to enter a name");
-                    }
-                }*/
                Boolean checknameExists = db.nameExists(name.getText().toString());
                if(checknameExists){
                    Animation animShake = AnimationUtils.loadAnimation(activity.getWindow().getContext(), R.anim.rotate);

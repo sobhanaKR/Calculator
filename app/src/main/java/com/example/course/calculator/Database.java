@@ -49,7 +49,6 @@ public class Database extends SQLiteOpenHelper {
         return count > 0;
     }
     public long getId(){
-        long id=0;
         ArrayList<Long> cursorArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor= db.rawQuery("SELECT id FROM Scoreboard",null);
@@ -74,16 +73,6 @@ public class Database extends SQLiteOpenHelper {
         contentValues.put("name",name);
         long id = db.insert("Scoreboard", null, contentValues);
         return id;
-    }public boolean checkName (String name) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT "+SCORE_COLUMN_NAME+" FROM "+SCORE_TABLE_NAME+" WHERE "+SCORE_COLUMN_NAME+" = "+name,null);
-        if(res.getCount()>0 && res!=null) {
-            res.close();
-            return true;
-        }else{
-            res.close();
-            return false;
-        }
     }
 
     public Cursor getData() {
@@ -123,20 +112,6 @@ public class Database extends SQLiteOpenHelper {
         }
 
         return data;
-    }
-    public boolean updateScore ( int score) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("score",score);
-        db.update("ScoreBoard", contentValues, "id = ? ", new String[] { Integer.toString(Integer.parseInt(SCORE_COLUMN_ID)) } );
-        return true;
-    }
-
-    public Integer deleteScore (Integer id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete("Scoreboard",
-                "id = ? ",
-                new String[] { Integer.toString(id) });
     }
 
 }

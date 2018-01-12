@@ -407,6 +407,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         Intent intent = new Intent(this, DisplayScoreCard.class);
         intent.putExtra("score",scorenum);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_out_left, R.anim.slide_in_right);
         return super.onOptionsItemSelected(item);
 
     }
