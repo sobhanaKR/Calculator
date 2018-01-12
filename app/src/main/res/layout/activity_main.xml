@@ -169,7 +169,7 @@
 
         <Button
             android:id="@+id/result_button"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="40dp"
             android:background="@drawable/circle_shape"
@@ -180,12 +180,29 @@
             android:textColorHint="#ff0000"
             android:textSize="22sp" />
     </LinearLayout>
-
+    <LinearLayout
+        android:id="@+id/timer_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/remove_btn_rectangle"
+        android:layout_below="@id/Result_layout">
+   <TextView
+       android:id="@+id/timer_view"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:gravity="center_horizontal"
+       android:textSize="26sp"
+       android:layout_margin="5dp"
+       android:text="00:00"
+       android:textColor="#000000" />
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/go_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/multiplication_layout"
+        android:layout_below="@id/Result_layout"
+        android:layout_marginTop="10dp"
         android:background="?attr/selectableItemBackground"
         android:layout_marginRight="7dp">
 

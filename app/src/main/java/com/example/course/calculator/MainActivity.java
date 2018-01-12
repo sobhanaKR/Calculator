@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +23,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements EnterName.CallbackHandler {
@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
     int Globalans;
     Button resultBtn;
     AppCompatImageView image;
-    int flag = 0;
     TextView score;
     int scorenum;
     TextView refresh;
@@ -48,6 +47,10 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
     int clickTimes;
     Database db;
     int rangeOperators =0;
+    ActionBar actionBar;
+    TextView timer;
+    Boolean isPaused = false;
+    CountDownTimer countDownTimer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +60,11 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         context = getWindow().getContext();
         enterNameFragment();
         sharedPreferences = getWindow().getContext().getSharedPreferences("calci_app", Context.MODE_PRIVATE);
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setTitle("CalciPlay");
         initializeVariables();
+
         optionA.setTextColor(Color.parseColor("#000000"));
         optionB.setTextColor(Color.parseColor("#000000"));
         optionC.setTextColor(Color.parseColor("#000000"));
@@ -73,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
             @Override
             public void onClick(View view) {
                 refreshGame();
+                startTimer();
                 goBtn.setEnabled(true);
             }
         });
@@ -80,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
             @Override
             public void onClick(View view) {
                 refreshGame();
+                startTimer();
                 goBtn.setEnabled(true);
             }
         });
@@ -88,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
             public void onClick(View view) {
                 settingBordersColors(optionA,optionB,optionC,optionD);
                 image.setVisibility(View.GONE);
-                flag = 1;
                 goBtn.setEnabled(true);
             }
         });
@@ -97,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
             public void onClick(View view) {
                 settingBordersColors(optionB,optionA,optionC,optionD);
                 image.setVisibility(View.GONE);
-                flag =1;
                 goBtn.setEnabled(true);
             }
         });
@@ -106,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
             public void onClick(View view) {
                 settingBordersColors(optionC,optionA,optionB,optionD);
                 image.setVisibility(View.GONE);
-                flag =1;
                 goBtn.setEnabled(true);
             }
         });
@@ -115,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
             public void onClick(View view) {
                 settingBordersColors(optionD,optionA,optionC,optionB);
                 image.setVisibility(View.GONE);
-                flag =1;
                 goBtn.setEnabled(true);
             }
         });
@@ -128,9 +130,10 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
                     InputMethodManager imm = (InputMethodManager)getSystemService(getWindow().getContext().INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
-                if(flag>0) {
                     if (resultBtn.getText().toString().matches("")) {
-                        Toast.makeText(getWindow().getContext(), "Enter the Answer!", Toast.LENGTH_SHORT).show();
+                        arrow.setVisibility(View.VISIBLE);
+                        refresh.setVisibility(View.VISIBLE);
+                        countDownTimer.cancel();
                     }
                     if (!resultBtn.getText().toString().matches("")) {
                         int temp = Integer.parseInt(resultBtn.getText().toString());
@@ -141,13 +144,11 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
                             wrongAnswerOutcome();
                         }
                     }
-                }
-                else {
-                    Toast.makeText(getWindow().getContext(),"Choose the Operators!",Toast.LENGTH_SHORT).show();
-                }
-
             }
         });
+        if(timer.getText().toString().equals("00:40")){
+            timer.setTextColor(Color.parseColor("#ff0000"));
+        }
     }
 
     private void settingBordersColors(Button optionA, Button optionB, Button optionC, Button optionD) {
@@ -193,6 +194,10 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         optionC.setEnabled(false);
         optionD.setEnabled(false);
         goBtn.setEnabled(false);
+        isPaused = true;
+        if(countDownTimer!=null) {
+            countDownTimer.cancel();
+        }
     }
 
     private void correctAnswerAnim() {
@@ -421,6 +426,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         hidingItems();
         resultBtn.setText("");
         resultBtn.setBackgroundResource(R.drawable.circle_shape);
+        startTimer();
     }
 
     private void hidingItems() {
@@ -458,6 +464,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         refresh = (TextView)findViewById(R.id.new_game);
         arrow = (ImageView)findViewById(R.id.arrow);
         operator = (Button)findViewById(R.id.operator_btn);
+        timer = (TextView)findViewById(R.id.timer_view);
         db = new Database(this);
     }
 
@@ -465,11 +472,31 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
     public void saveName(String name) {
 
         this.name = name;
+        if(name!=null) {
+            startTimer();
+        }
+    }
+
+    private void startTimer() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+        countDownTimer= new CountDownTimer(60000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                timer.setText("00:" + String.valueOf(millisUntilFinished / 1000));
+            }
+
+            public void onFinish() {
+                timer.setText("00:00");
+            }
+        }.start();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
     }
 
     @Override
