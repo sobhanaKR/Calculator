@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -44,7 +46,8 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
     Button operator;
     int a = 0,b = 0,c = 0,d = 0;
     int clickTimes;
-    int []exclude = new int[5];
+    Database db;
+    int rangeOperators =0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         optionD.setTextColor(Color.parseColor("#000000"));
         goBtn.setEnabled(true);
         range3 = generationNumbers();
+
         choosingOperators();
         arrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,6 +185,8 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         resultBtn.setBackgroundResource(R.drawable.green_circle);
         image.setVisibility(View.VISIBLE);
         settingScores();
+        long id = db.getId();
+        db.insertScore(scorenum,id);
         correctAnswerAnim();
         optionA.setEnabled(false);
         optionB.setEnabled(false);
@@ -229,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         optionB.setEnabled(true);
         optionC.setEnabled(true);
         optionD.setEnabled(true);
-        switch(range3) {
+        switch(rangeOperators) {
             case 0: {
                 int addResult = Integer.parseInt(firstNum.getText().toString()) + Integer.parseInt(secondNum.getText().toString());
                 operator.setText("+");
@@ -252,6 +258,16 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
                 int divResult = Integer.parseInt(firstNum.getText().toString()) / Integer.parseInt(secondNum.getText().toString());
                 operator.setText("/");
                 settingCorrectOption(divResult);
+                break;
+            }case 4: {
+                int modResult = Integer.parseInt(firstNum.getText().toString()) % Integer.parseInt(secondNum.getText().toString());
+                operator.setText("%");
+                settingCorrectOption(modResult);
+                break;
+            }case 5: {
+                int expoResult = Integer.parseInt(firstNum.getText().toString()) ^ Integer.parseInt(secondNum.getText().toString());
+                operator.setText("^");
+                settingCorrectOption(expoResult);
                 break;
             }
         }
@@ -276,6 +292,14 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
             case 3: {
                 int divResult = Integer.parseInt(firstNum.getText().toString()) / Integer.parseInt(secondNum.getText().toString());
                 Globalans = divResult;
+                break;
+            }case 4: {
+                int modResult = Integer.parseInt(firstNum.getText().toString()) % Integer.parseInt(secondNum.getText().toString());
+                Globalans = modResult;
+                break;
+            }case 5: {
+                int expoResult = Integer.parseInt(firstNum.getText().toString()) % Integer.parseInt(secondNum.getText().toString());
+                Globalans = expoResult;
                 break;
             }
         }
@@ -308,10 +332,12 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
     private int  generationNumbers() {
         if(scorenum>50) {
             int end = 100;
-            range3 = settingRandomValues(end);
+            int start = 10;
+            range3 = settingRandomValues(end,start,2);
         }else {
             int end = 10;
-            range3 = settingRandomValues(end);
+            int  start = 1;
+            range3 = settingRandomValues(end,start, 2);
         }
         optionA.setText("a. " + a);
         optionB.setText("b. " + b);
@@ -320,12 +346,13 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         return  range3;
     }
 
-    private int settingRandomValues(int end) {
+    private int settingRandomValues(int end, int start, int i) {
         Random r = new Random();
         int range1 = 0,range2 = 0,range3 = 0;
-        range1 = r.nextInt(end - 1) + 1;
-        range2 = r.nextInt(end - 1) + 1;
+        range1 = r.nextInt(end - start) + start;
+        range2 = r.nextInt(end - start) + start;
         range3 = r.nextInt(3 - 0) + 0;
+        rangeOperators = r.nextInt(5-0)+0;
         if (range1 > range2 || range1 == range2) {
             firstNum.setText(String.valueOf(range1));
             secondNum.setText(String.valueOf(range2));
@@ -334,23 +361,23 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
             secondNum.setText(String.valueOf(range1));
         }
         calculatingResult();
-        a = GetRandomNumbers(r,b,c,d,Globalans,2);
-        b = GetRandomNumbers(r,a,c,d,Globalans, 2);
-        c = GetRandomNumbers(r,b,a,d,Globalans, 2);
-        d = GetRandomNumbers(r,b,c,a,Globalans, 2);
+        a = GetRandomNumbers(r,b,c,d,Globalans,i,start,end);
+        b = GetRandomNumbers(r,a,c,d,Globalans, i,start,end);
+        c = GetRandomNumbers(r,b,a,d,Globalans, i,start,end);
+        d = GetRandomNumbers(r,b,c,a,Globalans, i,start,end);
         return  range3;
     }
 
-    public  int GetRandomNumbers(Random random, int b, int c, int d, int globalans, int i)
+    public  int GetRandomNumbers(Random random, int b, int c, int d, int globalans, int i, int start, int end)
     {
         int number;
         if(i==1) {
             do {
-                number = random.nextInt(10 - 0) + 0;
+                number = random.nextInt(end - start) + start;
             } while (number == b || number == c || number == d || number == globalans);
         }else{
             do {
-                number = random.nextInt(100 - 0) + 0;
+                number = random.nextInt(end - start) + start;
             } while (number == b || number == c || number == d || number == globalans);
 
         }
@@ -378,7 +405,6 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent(this, DisplayScoreCard.class);
-        intent.putExtra("name",name);
         intent.putExtra("score",scorenum);
         startActivity(intent);
         return super.onOptionsItemSelected(item);
@@ -431,10 +457,12 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         refresh = (TextView)findViewById(R.id.new_game);
         arrow = (ImageView)findViewById(R.id.arrow);
         operator = (Button)findViewById(R.id.operator_btn);
+        db = new Database(this);
     }
 
     @Override
     public void saveName(String name) {
+
         this.name = name;
     }
 

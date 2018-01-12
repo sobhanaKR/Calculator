@@ -38,10 +38,6 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.View
             holder.name.setText(namestr);
             holder.score.setText(String.valueOf(scorestr));
         }
-        else{
-            holder.name.setText("default");
-            holder.score.setText(String.valueOf(scorestr));
-        }
 
         Log.i("check", "name == " + namestr);
         Log.i("check", "score ==" + scorestr);

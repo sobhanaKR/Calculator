@@ -1,14 +1,19 @@
 package com.example.course.calculator;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -26,6 +31,7 @@ public class DisplayScoreCard extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     int i;
+    Database db;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.display_score_card);
@@ -35,8 +41,18 @@ public class DisplayScoreCard extends AppCompatActivity {
         sharedPreferences = context.getSharedPreferences("calciprefs",
                 Context.MODE_PRIVATE);
         scoreList = intent.getIntExtra("score",0);
-        nameStr = intent.getStringExtra("name");
-        loadSharedPrefs();
+        Cursor cursor;
+        cursor = db.getData();
+        ArrayList<String> namearr = new ArrayList<String>();
+        ArrayList<Integer> scorearr = new ArrayList<Integer>();
+         namearr = db.getname();
+         scorearr = db.getscore();
+
+
+        Log.i("check","cursor"+cursor.toString());
+        Log.i("check","name"+namearr);
+        Log.i("check","score"+scorearr);
+      /*  loadSharedPrefs();
         if (context != null) {
             editor = context.getSharedPreferences("calciprefs",
                     Context.MODE_PRIVATE).edit();
@@ -72,9 +88,10 @@ public class DisplayScoreCard extends AppCompatActivity {
             editor.commit();
             editor.apply();
         }
+        */
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Score Card");
-        scoreListAdapter = new ScoreListAdapter(nameArray,scoreArray);
+        scoreListAdapter = new ScoreListAdapter(namearr,scorearr);
         recyclerView.setAdapter(scoreListAdapter);
         super.onCreate(savedInstanceState);
     }
@@ -97,11 +114,13 @@ public class DisplayScoreCard extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("WrongConstant")
     private void initializeVariables() {
         recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayout = new LinearLayoutManager(this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayout);
+        db = new Database(this);
     }
 
 }
