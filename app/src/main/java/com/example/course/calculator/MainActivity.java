@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -170,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         image.setVisibility(View.VISIBLE);
         arrow.setVisibility(View.VISIBLE);
         refresh.setVisibility(View.VISIBLE);
+        settingScores();
         wrongAnswerAnim();
     }
 
@@ -189,15 +191,18 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
         long id = db.getId();
         db.insertScore(scorenum,id);
         correctAnswerAnim();
+        disablingOptions();
+        if(countDownTimer!=null) {
+            countDownTimer.cancel();
+        }
+    }
+
+    private void disablingOptions() {
         optionA.setEnabled(false);
         optionB.setEnabled(false);
         optionC.setEnabled(false);
         optionD.setEnabled(false);
         goBtn.setEnabled(false);
-        isPaused = true;
-        if(countDownTimer!=null) {
-            countDownTimer.cancel();
-        }
     }
 
     private void correctAnswerAnim() {
@@ -489,6 +494,10 @@ public class MainActivity extends AppCompatActivity implements EnterName.Callbac
 
             public void onFinish() {
                 timer.setText("00:00");
+                settingScores();
+                refresh.setVisibility(View.VISIBLE);
+                arrow.setVisibility(View.VISIBLE);
+                disablingOptions();
             }
         }.start();
     }
